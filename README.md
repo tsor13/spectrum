@@ -5,6 +5,8 @@ Paper: https://arxiv.org/abs/2510.06084
 
 Models 🤗: https://huggingface.co/collections/tsor13/spectrum-68dac670f618224845c0fb7d
 
+Dataset: [Enter your email here to be notified when fully released!](https://docs.google.com/forms/d/e/1FAIpQLSe9o_KCmmBBgAUPHIwNg16jcLBtuIc-8zcydHQ3mWzx861qBw/viewform?usp=sharing&ouid=100867825220153270386)
+
 Under construction 🚜🦺🛠️ coming very soon!
 
 ## Spectrum Suite
