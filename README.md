@@ -1,5 +1,9 @@
 # Spectrum Repository
-Companion repository for *Spectrum Tuning: Post-Training for Distributional Coverage and In-Context Steerability*
+Companion repository for [*Spectrum Tuning: Post-Training for Distributional Coverage and In-Context Steerability*](https://arxiv.org/abs/2510.06084)
+
+Paper: https://arxiv.org/abs/2510.06084
+
+Models 🤗: https://huggingface.co/collections/tsor13/spectrum-68dac670f618224845c0fb7d
 
 Under construction 🚜🦺🛠️ coming very soon!
 
@@ -13,3 +17,16 @@ To be notified when Spectrum Suite is fully released, [enter your email here!](h
 Trained models 🤗: https://huggingface.co/collections/tsor13/spectrum-68dac670f618224845c0fb7d
 
 Training code: coming soon!
+
+## Citation
+```bibtex
+@misc{sorensen2025spectrumtuningposttrainingdistributional,
+      title={Spectrum Tuning: Post-Training for Distributional Coverage and In-Context Steerability}, 
+      author={Taylor Sorensen and Benjamin Newman and Jared Moore and Chan Park and Jillian Fisher and Niloofar Mireshghallah and Liwei Jiang and Yejin Choi},
+      year={2025},
+      eprint={2510.06084},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2510.06084}, 
+}
+```
