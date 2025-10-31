@@ -1,0 +1,8 @@
+distributed_type: DEEPSPEED
+deepspeed_config:
+  zero_stage: 2          # simpler first
+  zero3_init_flag: false # disable lazy init
+  offload_param: null
+  offload_optimizer: null
+mixed_precision: bf16
+num_processes: 2

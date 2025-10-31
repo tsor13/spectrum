@@ -1,0 +1,133 @@
+# uv run launch_configs/launch_sbatch_grid.py launch_configs/icl_pt_it.yaml --max-concurrent 16
+command: "uv run src/spectrum/icl_classes/eval_icl.py --auto_fixed_examples"
+
+# Sbatch configuration for SLURM job submission
+sbatch:
+  partition: gpu-a100                   # partition
+  account: xlab                         # account
+  time: "100:00:00"                     # wall time
+  ntasks: 1                             # number of tasks
+  mem: 80G                              # memory per node
+  gpus-per-task: 4                      # GPUs per task
+  cpus-per-task: 4                      # CPUs per task
+  chdir: "/gscratch/xlab/tsor13/spectrum-staging"  # working directory
+  output: "logs/%x-%j.out"              # output file pattern
+  job-name: "icl-eval"                  # base job name (will be appended with index)
+
+base:
+
+  batch_size: 1
+  max_eval_examples: 1000
+
+runs:
+  # llama 3.1 8B
+  - model_name: meta-llama/Llama-3.1-8B
+    format: colon
+  
+  - model_name: meta-llama/Llama-3.1-8B-Instruct
+    format: colon # colon was found to have best performance on llama instruct model - out of colon, chat, and chat_simple
+
+  # qwen
+  - model_name: qwen/Qwen3-14B-Base
+    format: colon
+
+  - model_name: qwen/Qwen3-14B
+    format: chat # chat prompt was found to have best performance on qwen instruct model - out of colon, chat, and chat_simple
+  
+  # gemma 3 12b
+  - model_name: google/gemma-3-12b-pt
+    format: colon
+
+  - model_name: google/gemma-3-12b-it
+    format: chat # chat prompt was found to have best performance on gemma it model - out of colon, chat, and chat_simple
+
+datasets:                                      # optional – omit if N/A
+  - dataset: polis_comment
+  - dataset: diffuse_distribution
+  - dataset: normal
+  - dataset: novacomet_hypothesis
+  - dataset: novacomet_premise
+  - dataset: habermas_question
+  - dataset: habermas_opinions
+  - dataset: habermas_categorical
+  - dataset: habermas_individual
+  - dataset: valueprism_situation
+  - dataset: valueprism_vrd
+  - dataset: valueprism_vrds_noncontextual
+  - dataset: valueprism_misc
+  - dataset: opinionqa_questions
+  - dataset: generativesocialchoice_validation
+  - dataset: generativesocialchoice_freetext
+  - dataset: popquorn_og_categorical
+  - dataset: numbergame_perc
+  - dataset: babynames
+  - dataset: haikus
+  - dataset: valueconsistency
+  - dataset: globaloqa
+  - dataset: issuebench
+  - dataset: chatbotarena_prompts
+  - dataset: chatbotarena_assistant
+  - dataset: cards
+  - dataset: multinomial
+  - dataset: geometric
+  - dataset: poisson
+  - dataset: binomial
+  - dataset: geometric_beta
+  - dataset: hypergeometric
+  - dataset: zipfian
+  - dataset: changemyview_categories
+  - dataset: changemyview_posts
+  - dataset: bare_gsm8k
+  - dataset: bare_enron
+  # - dataset: bare_hotpot # only one example fits into context
+  - dataset: bare_lcb
+  - dataset: newsgroups
+  # - dataset: pubmed # only one example fits into context
+  - dataset: gsm8k_question
+  - dataset: gsm8k_answer_from_question
+  - dataset: gsm8k_question_answer
+  - dataset: gsm8k_question_from_answer
+  - dataset: ambient_premise_hypothesis
+  - dataset: ambient_disambiguation
+  - dataset: ambient_linguist_annotations
+  - dataset: ambient_annotation_distributions
+  - dataset: titanic_all_variables
+  - dataset: jeopardy_question_generation
+  - dataset: jeopardy_answer_prediction
+  - dataset: prism_prompts
+  - dataset: prism_prompts_individual
+  - dataset: prism_individual_preferences
+  - dataset: netflix_individual_views
+  - dataset: lewidi_par_paraphrase_detection_individual
+  - dataset: lewidi_varierrnli_nli_detection_individual
+  - dataset: community_alignment_initial_prompt
+  - dataset: community_alignment_individual_reply
+  - dataset: community_alignment_individual_preferences
+  - dataset: community_alignment_response
+  # - dataset: collective_alignment_individual # TOO SMALL
+  - dataset: chemistry_esol
+  - dataset: chemistry_oxidative
+  - dataset: polis_vote
+  - dataset: flight
+  - dataset: coinflip
+  - dataset: wvs_individual
+  - dataset: numbergame_individual
+  - dataset: chatbotarena_individual_prefs
+  - dataset: helpsteer
+  - dataset: dices
+  - dataset: negative_binomial
+  - dataset: habermas_individual_categorical
+  - dataset: hatespeech_individual
+  - dataset: opinionqa_individual
+  - dataset: popquorn_individual
+  - dataset: lewidi_csc_sarcasm_detection_individual
+  - dataset: lewidi_mp_irony_detection_individual
+  - dataset: lewidi_par_paraphrase_detection_individual_categorical
+  - dataset: lewidi_varierrnli_nli_detection_individual_categorical
+  - dataset: categorical
+  - dataset: ambient_interpretation_labels
+  - dataset: netflix_individual_ratings
+  - dataset: titanic_survival_prediction
+  - dataset: imdb
+  - dataset: ambient_ambiguity_detection
+   

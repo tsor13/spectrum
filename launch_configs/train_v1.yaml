@@ -1,0 +1,47 @@
+# uv run launch_configs/launch_sbatch_grid.py launch_configs/train_v1.yaml --print --max-concurrent 6 # remove the --print flag to run
+command: "uv run -- accelerate launch --config_file launch_configs/accelerate_config_zero3.yaml --num_processes 4 \ --gradient_accumulation_steps 256 --main_process_port $PORT src/spectrum/train.py" # accelerate
+
+sbatch:
+  partition: gpu-a100
+  account: xlab
+  time: "100:00:00"
+  ntasks: 1
+  gpus-per-task: 4
+  cpus-per-task: 16
+  mem: 80G
+  chdir: "/gscratch/xlab/tsor13/spectrum-staging"
+  output: "logs/%x-%j.out"
+  job-name: "train-v1"
+
+env:
+  PORT: # ensure that each run has a unique port to avoid conficts on same machine
+    start: 6000
+    step: 1
+
+base:
+  max_length: 1024
+  per_device_train_batch_size: 1
+  extra_flags: ["--no_eval_before_train"]
+  gradient_accumulation_steps: 256
+  learning_rate: 3e-6
+
+# base_modified are base models with token (un/)embedding weights copied for
+# JUST the special tokens from the corresponding instruct model.
+# To populate base_modified, run: uv run src/spectrum/weight_transfer.py
+runs:
+  - format: "spectrum"
+    model_name: base_modified/Qwen/Qwen3-14B-Base
+    # model_name: Qwen/Qwen3-0.6B-Base
+  
+  - format: "spectrum"
+    model_name: base_modified/google/gemma-3-12b-pt/
+    # model_name: google/gemma-3-1b-pt
+    # model_name: google/gemma-3-12b-it
+
+
+  - format: "spectrum"
+    model_name: base_modified/meta-llama/Llama-3.1-8B/
+
+
+datasets:
+  - output_root: "models_v0"

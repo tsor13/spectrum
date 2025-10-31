@@ -1,0 +1,120 @@
+# uv run launch_sbatch_grid.py eval_scripts/distributional_tasks/scripts/distributional_ablate.yaml --max-concurrent 16
+# uv run launch_grid.py eval_scripts/distributional_tasks/scripts/distributional_ablate.yaml 
+command: "uv run eval_scripts/eval_distributional.py --log_wandb"
+
+# Sbatch configuration for SLURM job submission
+sbatch:
+  partition: gpu-a100                   # partition
+  account: xlab                         # account
+  time: "36:00:00"                      # wall time
+  ntasks: 1                             # number of tasks
+  mem: 80G                              # memory per node
+  gpus-per-task: 1                      # GPUs per task
+  cpus-per-task: 4                      # CPUs per task
+  chdir: "/gscratch/xlab/tsor13/bayesbench"  # working directory
+  output: "logs/%x-%j.out"              # output file pattern
+  job-name: "dist-eval"                   # base job name (will be appended with index)
+
+base:                                         # merged into every run
+  # batch_size: 32
+  batch_size: 16
+  max_eval: 1000
+  random_seed: 42
+  format: explicit
+
+runs:                                         # model variants
+  # - model_name: models_v9/base_modified-google-gemma-3-12b-pt-/models/_explicit/
+
+  # - model_name: models_v9/base_modified-Qwen-Qwen3-14B-Base/models/_explicit/
+
+  # - model_name: models_v9/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit/
+
+  # - model_name: models_v9/base_bracket-google-gemma-3-12b-pt-/models/_explicit/
+
+  # - model_name: models_v9/base_bracket-Qwen-Qwen3-14B-Base/models/_explicit/
+
+  # - model_name: models_v9/base_bracket-meta-llama-Llama-3.1-8B-/models/_explicit/
+
+  # - model_name: models_v9/google-gemma-3-12b-it/models/_explicit/
+
+  # - model_name: models_v9/Qwen-Qwen3-14B/models/_explicit/
+
+  # - model_name: models_v9/meta-llama-Llama-3.1-8B-Instruct/models/_explicit/
+
+  # - model_name: models_v9/google-gemma-3-12b-pt/models/_explicit/
+
+  # - model_name: models_v9/Qwen-Qwen3-14B-Base/models/_explicit/ # not done training
+
+  # - model_name: models_v9/meta-llama-Llama-3.1-8B/models/_explicit/ # not done training
+
+  # - model_name: base_modified/google/gemma-3-12b-pt/
+
+  # - model_name: base_modified/meta-llama/Llama-3.1-8B/
+
+  # - model_name: base_modified/Qwen/Qwen3-14B-Base/
+
+  # standard instruction tuning models
+  # - model_name: google/gemma-3-12b-it
+
+  # - model_name: meta-llama/Llama-3.1-8B-Instruct
+
+  # - model_name: Qwen/Qwen3-14B
+
+  # # Half batch size
+  # - model_name: models_v9_halfbatch/base_modified-google-gemma-3-12b-pt-/models/_explicit/
+
+  # - model_name: models_v9_halfbatch/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit/
+
+  # - model_name: models_v9_halfbatch/base_modified-Qwen-Qwen3-14B-Base/models/_explicit/
+
+  # # quarter batch size
+  # - model_name: models_v9_quarterbatch/base_modified-google-gemma-3-12b-pt-/models/_explicit/
+
+  # - model_name: models_v9_quarterbatch/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit/
+
+  # - model_name: models_v9_quarterbatch/base_modified-Qwen-Qwen3-14B-Base/models/_explicit/
+
+  # # eighth batch size
+  # - model_name: models_v9_eighthbatch/base_modified-google-gemma-3-12b-pt-/models/_explicit/
+
+  # - model_name: models_v9_eighthbatch/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit/
+
+  # - model_name: models_v9_eighthbatch/base_modified-Qwen-Qwen3-14B-Base/models/_explicit/
+
+  # # first ex (eg models_v9_firstex/base_modified-google-gemma-3-12b-pt-/models/_explicit)
+  # - model_name: models_v9_firstex/base_modified-google-gemma-3-12b-pt-/models/_explicit
+  # - model_name: models_v9_firstex/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit
+  # - model_name: models_v9_firstex/base_modified-Qwen-Qwen3-14B-Base/models/_explicit
+
+  # # last ex (eg models_v9_lastex/base_modified-google-gemma-3-12b-pt-/models/_explicit)
+  # - model_name: models_v9_lastex/base_modified-google-gemma-3-12b-pt-/models/_explicit
+  # - model_name: models_v9_lastex/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit
+  # - model_name: models_v9_lastex/base_modified-Qwen-Qwen3-14B-Base/models/_explicit
+
+  # # capability (models_v9_capability/)
+  # - model_name: models_v9_capability/base_modified-google-gemma-3-12b-pt-/models/_explicit
+  # - model_name: models_v9_capability/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit
+  # - model_name: models_v9_capability/base_modified-Qwen-Qwen3-14B-Base/models/_explicit
+
+  # models_v9_default_capability_restrict/
+  - model_name: models_v9_default_capability_restrict/base_modified-google-gemma-3-12b-pt-/models/_explicit
+  - model_name: models_v9_default_capability_restrict/base_modified-meta-llama-Llama-3.1-8B-/models/_explicit
+  - model_name: models_v9_default_capability_restrict/base_modified-Qwen-Qwen3-14B-Base/models/_explicit
+
+
+
+datasets:                                     # distributional evaluation tasks
+  - task: global_oqa
+
+  - task: nytimes
+
+  - task: mpi
+
+  - task: rotten_tomatoes
+
+  - task: urn
+
+  - task: habermas
+
+  - task: numbergame
+  

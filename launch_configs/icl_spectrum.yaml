@@ -1,0 +1,50 @@
+# uv run launch_configs/launch_sbatch_grid.py launch_configs/icl_spectrum.yaml --max-concurrent 16
+command: "uv run src/spectrum/icl_classes/eval_icl.py --auto_fixed_examples"
+
+# Sbatch configuration for SLURM job submission
+sbatch:
+  partition: gpu-a100                   # partition
+  account: xlab                         # account
+  time: "36:00:00"                      # wall time
+  ntasks: 1                             # number of tasks
+  mem: 80G                              # memory per node
+  gpus-per-task: 1                      # GPUs per task
+  cpus-per-task: 4                      # CPUs per task
+  chdir: "/gscratch/xlab/tsor13/spectrum-staging"  # working directory
+  output: "logs/%x-%j.out"              # output file pattern
+  job-name: "icl-eval"                   # base job name (will be appended with index)
+
+base:                                         # merged into every run
+  batch_size: 1
+  max_eval_examples: 1000
+
+
+runs:                                         # ≈ "model variants"
+  - dataset: novacomet_hypothesis
+  - dataset: novacomet_premise
+  - dataset: habermas_question
+  - dataset: habermas_opinions
+  - dataset: habermas_individual
+  - dataset: numbergame_perc
+  - dataset: globaloqa
+  - dataset: chatbotarena_prompts
+  - dataset: chatbotarena_assistant
+  - dataset: chemistry_esol
+  - dataset: chemistry_oxidative
+  - dataset: habermas_individual_categorical
+  - dataset: wvs_individual
+  - dataset: numbergame_individual
+  - dataset: chatbotarena_individual_prefs
+  - dataset: flight
+  
+datasets:
+  
+  - model_name: tsor13/spectrum-Llama-3.1-8B-v0
+    format: spectrum
+
+  - model_name: tsor13/spectrum-Qwen3-14B-v0
+    format: spectrum
+
+  - model_name: tsor13/spectrum-gemma-3-12b-v0
+    format: spectrum
+  

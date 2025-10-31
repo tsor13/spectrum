@@ -1,0 +1,70 @@
+# uv run launch_sbatch_grid.py eval_scripts/distributional_tasks/scripts/distributional.yaml --max-concurrent 8
+command: "uv run eval_scripts/eval_distributional.py --log_wandb"
+
+# Sbatch configuration for SLURM job submission
+sbatch:
+  partition: gpu-a100                   # partition
+  account: xlab                         # account
+  time: "36:00:00"                      # wall time
+  ntasks: 1                             # number of tasks
+  mem: 80G                              # memory per node
+  gpus-per-task: 1                      # GPUs per task
+  cpus-per-task: 4                      # CPUs per task
+  chdir: "/gscratch/xlab/tsor13/bayesbench"  # working directory
+  output: "logs/%x-%j.out"              # output file pattern
+  job-name: "dist-eval"                   # base job name (will be appended with index)
+
+base:                                         # merged into every run
+  # batch_size: 32
+  batch_size: 16
+  max_eval: 1000
+  random_seed: 42
+
+runs:                                         # model variants
+  - model_name: google/gemma-3-12b-it
+    format: chat
+
+  - model_name: google/gemma-3-12b-pt
+    format: colon
+
+  - model_name: qwen/Qwen3-14B
+    format: chat
+
+  - model_name: qwen/Qwen3-14B-Base
+    format: colon
+  
+  - model_name: meta-llama/Llama-3.1-8B-Instruct
+    format: chat
+
+  - model_name: meta-llama/Llama-3.1-8B
+    format: colon
+  
+  - model_name: tsor13/opticl-Qwen3-14B
+    format: explicit
+
+  - model_name: tsor13/opticl-Llama-3.1-8B
+    format: explicit
+
+  - model_name: tsor13/opticl-gemma-3-12b
+    format: explicit
+
+
+
+datasets:                                     # distributional evaluation tasks
+  # - task: moral_choice # removing because the distribution isn't fine-grained enough to be interesting
+
+  # - task: global_oqa
+
+  # - task: nytimes
+
+  # - task: mpi
+
+  # - task: rotten_tomatoes
+
+  # - task: urn
+
+  - task: habermas
+
+  - task: numbergame
+  
+  # TODO - add more like urn, where there's a clear ground truth distribution and it's not human data?
